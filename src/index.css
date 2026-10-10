@@ -1,1 +1,57 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Dancing+Script:wght@600;700&display=swap');@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Pacifico&family=Great+Vibes&family=Satisfy&family=Kaushan+Script&family=Parisienne&display=swap');
 @import "tailwindcss";
+
+:root {
+  color-scheme: light;
+  --paper: #a9cff5;
+  --card: #ffffff;
+  --soft: #8fc0f1;
+  --line: #6f9bc6;
+  --ink: #1c2a37;
+  --muted: #3d5873;
+  --accent: #5b9fe6;
+  --accent-ink: #0c1b29;
+  --field: #e9f3fd;
+  /* Form colors: in light mode they are the SAME as before (card + field) */
+  --form: #ffffff;
+  --form-field: #e9f3fd;
+}
+
+.dark {
+  color-scheme: dark;
+  --paper: #121a22;
+  --card: #1c2732;
+  --soft: #384959;
+  --line: #4a6076;
+  --ink: #eef5fc;
+  --muted: #a3b9ce;
+  --accent: #88bdf2;
+  --accent-ink: #0b1620;
+  --field: #151e28;
+  /* Dark mode only: form panel = card banner color, inputs = card body color */
+  --form: #384959;
+  --form-field: #1c2732;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-card: var(--card);
+  --color-soft: var(--soft);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-field: var(--field);
+  --color-form: var(--form);
+  --color-form-field: var(--form-field);
+  --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+  --font-script: 'Great Vibes', cursive;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  transition: background 0.2s, color 0.2s;
+}
