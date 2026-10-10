@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Navbar from './components/Navbar'
 import Register from './pages/Register.jsx'
+import Admin from './pages/Admin.jsx'
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/register" />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </main>
       <footer className="border-t border-line py-5 text-center text-sm text-muted">
