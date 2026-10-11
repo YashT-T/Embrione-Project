@@ -1,53 +1,59 @@
-const DEFAULT_AVATAR =
-  'https://api.dicebear.com/9.x/initials/svg?seed=?&backgroundColor=bdddfc&textColor=384959'
+// Dark card used on /team and /admin.
+// Anything placed between <MemberCard> ... </MemberCard> (like the admin buttons) shows at the bottom.
 
-export default function MemberCard({ member }) {
+// Adds https:// if the user typed a link like "linkedin.com/in/..."
+const full = (url) => (url.startsWith('http') ? url : `https://${url}`)
+
+export default function MemberCard({ member, children }) {
   const { name, domain, position, bio, photo_url, branch, semester, linkedin_url, github_url } = member
+  const isLead = position === 'Head' // the Head gets the lime chip
 
   return (
-    <article className="w-full max-w-sm overflow-hidden rounded-2xl border border-line bg-card shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg">
-      <div className="h-24 bg-soft" />
+    <article className="card group flex flex-col overflow-hidden rounded-2xl border border-line bg-surface transition duration-300 ease-out hover:-translate-y-1.5 hover:border-lime/60 hover:shadow-[0_20px_40px_-20px_rgba(216,240,110,0.22)]">
+      <div className="p-3.5">
+        <span
+          className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
+            isLead ? 'bg-lime text-lime-ink' : 'border border-line bg-bg text-ink transition-colors duration-300 group-hover:border-lime/60 group-hover:text-lime'
+          }`}
+        >
+          {domain}
+        </span>
+      </div>
 
-      <div className="-mt-12 px-6 pb-6">
-        <img
-          src={photo_url || DEFAULT_AVATAR}
-          alt="Profile"
-          className="h-24 w-24 rounded-full border-4 border-card bg-paper object-cover"
-        />
-
-        <h3 className="mt-3 truncate text-xl font-bold">{name || 'Your Name'}</h3>
-
-        <div className="mt-2 flex flex-wrap gap-2">
-          <span className="rounded-md bg-accent px-2.5 py-1 text-xs font-semibold text-accent-ink">
-            {position || 'Position'}
-          </span>
-          <span className="rounded-md bg-soft px-2.5 py-1 text-xs font-semibold text-ink">
-            {domain || 'Domain'}
-          </span>
+      {/* Photo */}
+      <div className="overflow-hidden">
+        <img src={photo_url} alt={name} className="card-photo aspect-[4/3] w-full object-cover" />
+      </div>    
+        {/* Text */}
+      <div className="flex flex-1 flex-col p-4">
+        <div className="flex items-baseline justify-between gap-3">
+          <h3 className="truncate text-[22px] font-medium leading-tight transition-colors duration-300 group-hover:text-lime">{name}</h3>
+          <span className="shrink-0 text-sm text-muted">{position}</span>
         </div>
 
-        <p className="mt-3 text-xs text-muted">
-          {branch || 'Branch'} · Semester {semester || '?'}
-        </p>
+        <p className="mt-2 line-clamp-3 text-[15px] leading-snug text-muted">{bio}</p>
 
-        <p className="mt-3 line-clamp-4 text-sm leading-relaxed text-muted">
-          {bio || 'Your bio shows up here as you type it.'}
-        </p>
-
-        {(linkedin_url || github_url) && (
-          <div className="mt-4 flex gap-2 border-t border-line pt-4 text-xs font-medium">
-            {linkedin_url && (
-              <a href={linkedin_url} target="_blank" rel="noreferrer" className="rounded-lg border border-line px-3 py-1.5 transition hover:bg-soft">
-                LinkedIn
-              </a>
-            )}
-            {github_url && (
-              <a href={github_url} target="_blank" rel="noreferrer" className="rounded-lg border border-line px-3 py-1.5 transition hover:bg-soft">
-                GitHub
-              </a>
-            )}
+        <div className="mt-auto pt-4">
+          <div className="flex items-center justify-between gap-3 border-t border-line pt-3 text-[11px] font-medium uppercase tracking-[0.12em] text-muted">
+            <span>
+              {branch} · Sem {semester}
+            </span>
+            <span className="flex gap-3">
+              {linkedin_url && (
+                <a href={full(linkedin_url)} target="_blank" rel="noreferrer" className="transition-colors hover:text-lime">
+                  LinkedIn
+                </a>
+              )}
+              {github_url && (
+                <a href={full(github_url)} target="_blank" rel="noreferrer" className="transition-colors hover:text-lime">
+                  GitHub
+                </a>
+              )}
+            </span>
           </div>
-        )}
+
+          {children && <div className="mt-4">{children}</div>}
+        </div>
       </div>
     </article>
   )

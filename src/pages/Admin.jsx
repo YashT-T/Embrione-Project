@@ -7,13 +7,11 @@ import { supabase } from '../lib/supabase'
 const ADMIN_EMAIL = 'admin@embrione.pes.edu'
 const ADMIN_PASSWORD = 'EmbrioneAdmin@2026'
 
-const inputClass =
-  'w-full rounded-lg border border-line bg-field px-3.5 py-2.5 text-sm text-ink placeholder:text-muted/70 outline-none transition focus:border-accent focus:ring-4 focus:ring-accent/30'
-
-// ---------- Login screen ----------
+// ---------- Login ----------
 function Login({ onLogin }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [show, setShow] = useState(false) // show / hide the password
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -26,52 +24,65 @@ function Login({ onLogin }) {
   }
 
   return (
-    <div className="mx-auto max-w-md px-4 py-16">
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-5 rounded-2xl border border-line bg-card p-6 shadow-sm sm:p-8"
-      >
-        <h1 className="text-2xl font-extrabold tracking-tight">Admin login</h1>
+    <>
+      <header>
+        <p className="label">Embrione / Member operations</p>
+        <h1 className="hero-title">A little care. A stronger collective.</h1>
+        <p className="hero-sub">A considered space to review new members and welcome the next wave of curious minds.</p>
+      </header>
 
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-medium">Email</span>
+      <form onSubmit={handleSubmit} className="mt-14 max-w-xl rounded-3xl border border-line bg-surface p-6 sm:p-8">
+        <h2 className="font-display text-[28px] font-medium tracking-tight">Welcome back.</h2>
+
+        <label className="mt-6 block">
+          <span className="label mb-2 block">Email</span>
           <input
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="admin@embrione.pes.edu"
-            className={inputClass}
+            className="input"
           />
         </label>
 
-        <label className="block">
-          <span className="mb-1.5 block text-sm font-medium">Password</span>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Your password"
-            className={inputClass}
-          />
+        <label className="mt-5 block">
+          <span className="label mb-2 block">Password</span>
+          <div className="flex gap-2">
+            <input
+              type={show ? 'text' : 'password'}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="input"
+            />
+            <button
+              type="button"
+              onClick={() => setShow(!show)}
+              className="rounded-xl border border-line px-4 text-sm transition-colors hover:border-ink/50"
+            >
+              {show ? 'Hide' : 'Show'}
+            </button>
+          </div>
         </label>
 
         <button
           type="submit"
-          className="w-full rounded-lg bg-accent py-3 text-sm font-semibold text-accent-ink transition hover:brightness-95 active:scale-[0.99]"
+          className="mt-6 w-full rounded-xl bg-lime py-3.5 text-[15px] font-medium text-lime-ink transition hover:brightness-95"
         >
-          Log in
+          Enter review desk
         </button>
       </form>
-    </div>
+    </>
   )
 }
 
-// ---------- Small counter card ----------
-function Counter({ label, value }) {
+// ---------- One stat card ----------
+function Stat({ label, value, highlight }) {
   return (
-    <div className="rounded-2xl border border-line bg-card p-5 shadow-sm">
-      <p className="text-sm font-medium text-muted">{label}</p>
-      <p className="mt-1 text-3xl font-extrabold">{value}</p>
+    <div className="rounded-2xl border border-line bg-surface p-5">
+      <p className="label">{label}</p>
+      <p className={`mt-2 font-display text-6xl font-medium leading-none tabular-nums ${highlight ? 'text-lime' : ''}`}>
+        {value}
+      </p>
     </div>
   )
 }
@@ -119,64 +130,71 @@ function Dashboard({ onLogout }) {
   const approvedCount = members.filter((m) => m.status === 'approved').length
 
   return (
-    <div className="mx-auto max-w-6xl px-4 py-10 sm:py-14">
-      <div className="mb-8 flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-extrabold tracking-tight sm:text-4xl">Admin dashboard</h1>
+    <>
+      <header className="flex items-end justify-between gap-4">
+        <div>
+          <p className="label">Embrione / Admin</p>
+          <h1 className="hero-title">Review desk.</h1>
+        </div>
         <button
           onClick={onLogout}
-          className="rounded-lg border border-line px-3 py-1.5 text-sm font-medium transition hover:bg-soft"
+          className="rounded-full border border-line px-4 py-2 text-sm text-muted transition-colors hover:text-ink"
         >
           Log out
         </button>
+      </header>
+
+      <div className="mt-12 grid gap-4 sm:grid-cols-3">
+        <Stat label="Total" value={members.length} />
+        <Stat label="Pending" value={pending.length} highlight={pending.length > 0} />
+        <Stat label="Approved" value={approvedCount} />
       </div>
 
-      <div className="mb-10 grid gap-4 sm:grid-cols-3">
-        <Counter label="Total submissions" value={members.length} />
-        <Counter label="Pending" value={pending.length} />
-        <Counter label="Approved" value={approvedCount} />
+      <div className="mt-10 flex items-baseline gap-3 border-y border-line py-4">
+        <span className="label">Pending approval</span>
+        <span className="text-[15px] font-semibold">{pending.length}</span>
       </div>
 
-      <h2 className="mb-4 text-xl font-bold">Pending approval</h2>
-
-      {loading ? (
-        <p className="text-muted">Loading...</p>
-      ) : pending.length === 0 ? (
-        <p className="rounded-2xl border border-line bg-card p-8 text-center text-muted">
-          No pending profiles right now.
-        </p>
-      ) : (
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {pending.map((m) => (
-            <div key={m.id} className="flex flex-col gap-3">
-              <MemberCard member={m} />
-              <p className="truncate text-xs text-muted">
-                {m.srn} · {m.email}
-              </p>
-              <div className="flex gap-2">
-                <button
-                  onClick={() => updateStatus(m.id, 'approved')}
-                  className="flex-1 rounded-lg bg-accent py-2 text-sm font-semibold text-accent-ink transition hover:brightness-95"
-                >
-                  Approve
-                </button>
-                <button
-                  onClick={() => updateStatus(m.id, 'rejected')}
-                  className="flex-1 rounded-lg border border-line py-2 text-sm font-semibold transition hover:bg-soft"
-                >
-                  Reject
-                </button>
-                <button
-                  onClick={() => deleteMember(m.id)}
-                  className="rounded-lg border border-line px-3 py-2 text-sm font-semibold text-muted transition hover:bg-soft hover:text-ink"
-                >
-                  Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+      <div className="mt-6">
+        {loading ? (
+          <p className="text-muted">Loading...</p>
+        ) : pending.length === 0 ? (
+          <p className="rounded-2xl border border-dashed border-line py-14 text-center text-muted">
+            Nothing waiting. All caught up.
+          </p>
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {pending.map((m) => (
+              <MemberCard key={m.id} member={m}>
+                <p className="mb-3 truncate text-xs text-muted">
+                  {m.srn} · {m.email}
+                </p>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => updateStatus(m.id, 'approved')}
+                    className="flex-1 rounded-xl bg-lime py-2.5 text-sm font-medium text-lime-ink transition hover:brightness-95"
+                  >
+                    Approve
+                  </button>
+                  <button
+                    onClick={() => updateStatus(m.id, 'rejected')}
+                    className="flex-1 rounded-xl border border-line py-2.5 text-sm font-medium transition-colors hover:border-ink/50"
+                  >
+                    Reject
+                  </button>
+                  <button
+                    onClick={() => deleteMember(m.id)}
+                    className="rounded-xl px-3 text-sm text-muted transition-colors hover:text-ink"
+                  >
+                    Delete
+                  </button>
+                </div>
+              </MemberCard>
+            ))}
+          </div>
+        )}
+      </div>
+    </>
   )
 }
 
