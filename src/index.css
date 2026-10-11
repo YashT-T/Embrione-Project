@@ -86,3 +86,8 @@ body {
   .card-photo { filter: grayscale(1); }
   .card:hover .card-photo { filter: none; transform: scale(1.06); }
 }
+/* Dropdown that still shows its "Select ..." placeholder */
+.input[data-empty="true"] { color: #6c6f65; }
+
+/* Pointer cursor on every button (Tailwind v4 removed it) */
+button:not(:disabled) { cursor: pointer; }

@@ -12,8 +12,8 @@ const SEMESTERS = [1, 2, 3, 4, 5, 6, 7, 8]
 
 const emptyForm = {
   name: '', email: '', srn: '',
-  branch: BRANCHES[0], semester: String(SEMESTERS[0]),
-  domain: DOMAINS[0], position: POSITIONS[0],
+  branch: '', semester: '',
+  domain: '', position: '',
   bio: '', linkedin_url: '', github_url: '',
 }
 
@@ -27,9 +27,10 @@ function Field({ label, children }) {
   )
 }
 
-function Select({ name, value, onChange, options }) {
+function Select({ name, value, onChange, options, placeholder }) {
   return (
-    <select name={name} value={value} onChange={onChange} className="input">
+    <select name={name} value={value} onChange={onChange} data-empty={value === ''} className="input">
+      <option value="">{placeholder}</option>
       {options.map((o) => (
         <option key={o} value={o}>{o}</option>
       ))}
@@ -162,19 +163,19 @@ export default function Register() {
               <input name="srn" value={form.srn} onChange={handleChange} placeholder="PES1UG25CS001" className="input" />
             </Field>
             <Field label="Branch">
-              <Select name="branch" value={form.branch} onChange={handleChange} options={BRANCHES} />
+              <Select name="branch" value={form.branch} onChange={handleChange} options={BRANCHES} placeholder="Select branch" />
             </Field>
 
             <Field label="Semester">
-              <Select name="semester" value={form.semester} onChange={handleChange} options={SEMESTERS} />
+            <Select name="semester" value={form.semester} onChange={handleChange} options={SEMESTERS} placeholder="Select semester" />
             </Field>
             <Field label="Domain">
-              <Select name="domain" value={form.domain} onChange={handleChange} options={DOMAINS} />
+              <Select name="domain" value={form.domain} onChange={handleChange} options={DOMAINS} placeholder="Select domain" />
             </Field>
 
             <div className="sm:col-span-2">
               <Field label="Position">
-                <Select name="position" value={form.position} onChange={handleChange} options={POSITIONS} />
+                <Select name="position" value={form.position} onChange={handleChange} options={POSITIONS} placeholder="Select position" />
               </Field>
             </div>
 

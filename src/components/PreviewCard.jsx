@@ -25,9 +25,9 @@ export default function PreviewCard({ member }) {
 
       <div className="p-5">
         <h3 className="text-2xl font-medium leading-tight">{name || 'Your name'}</h3>
-        <p className="mt-1 font-medium">{position}</p>
+        <p className="mt-1 font-medium">{position || 'Position'}</p>
 
-        <span className="mt-3 inline-block rounded-full border border-bg/30 px-3 py-1 text-xs">{domain}</span>
+        <span className="mt-3 inline-block rounded-full border border-bg/30 px-3 py-1 text-xs">{domain || 'Domain'}</span>
 
         <p className="mt-4 text-[15px] leading-snug">
           {bio || 'Tell us what drives you. Share your story, your craft, and where you want to grow next.'}

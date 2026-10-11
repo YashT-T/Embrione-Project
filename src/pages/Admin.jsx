@@ -19,7 +19,7 @@ function Login({ onLogin }) {
       sessionStorage.setItem('isAdmin', 'true') // remembered until the tab closes
       onLogin()
     } else {
-      toast.error('Wrong email or password')
+      toast.error('Wrong username or password')
     }
   }
 
@@ -35,12 +35,12 @@ function Login({ onLogin }) {
         <h2 className="font-display text-[28px] font-medium tracking-tight">Welcome back.</h2>
 
         <label className="mt-6 block">
-          <span className="label mb-2 block">Email</span>
+          <span className="label mb-2 block">Username</span>
           <input
-            type="email"
+            type="text"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            placeholder="admin@embrione.pes.edu"
+            placeholder="Enter username"
             className="input"
           />
         </label>
@@ -52,6 +52,7 @@ function Login({ onLogin }) {
               type={show ? 'text' : 'password'}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="Enter password"
               className="input"
             />
             <button
@@ -145,7 +146,7 @@ function Dashboard({ onLogout }) {
       </header>
 
       <div className="mt-12 grid gap-4 sm:grid-cols-3">
-        <Stat label="Total" value={members.length} />
+        <Stat label="Total submissions" value={members.length} />
         <Stat label="Pending" value={pending.length} highlight={pending.length > 0} />
         <Stat label="Approved" value={approvedCount} />
       </div>
@@ -172,19 +173,19 @@ function Dashboard({ onLogout }) {
                 <div className="flex gap-2">
                   <button
                     onClick={() => updateStatus(m.id, 'approved')}
-                    className="flex-1 rounded-xl bg-lime py-2.5 text-sm font-medium text-lime-ink transition hover:brightness-95"
+                    className="flex-1 rounded-xl bg-lime py-2.5 text-sm font-medium text-lime-ink transition duration-200 hover:-translate-y-0.5 hover:brightness-110 hover:shadow-[0_8px_20px_-8px_rgba(216,240,110,0.6)] active:translate-y-0 active:scale-95"
                   >
                     Approve
                   </button>
                   <button
                     onClick={() => updateStatus(m.id, 'rejected')}
-                    className="flex-1 rounded-xl border border-line py-2.5 text-sm font-medium transition-colors hover:border-ink/50"
+                    className="flex-1 rounded-xl border border-line py-2.5 text-sm font-medium transition duration-200 hover:-translate-y-0.5 hover:border-danger hover:bg-danger/10 hover:text-danger active:translate-y-0 active:scale-95"
                   >
                     Reject
                   </button>
                   <button
                     onClick={() => deleteMember(m.id)}
-                    className="rounded-xl px-3 text-sm text-muted transition-colors hover:text-ink"
+                    className="rounded-xl px-3 text-sm text-muted transition duration-200 hover:bg-danger/10 hover:text-danger active:scale-95"
                   >
                     Delete
                   </button>

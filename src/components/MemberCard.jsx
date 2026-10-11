@@ -6,16 +6,11 @@ const full = (url) => (url.startsWith('http') ? url : `https://${url}`)
 
 export default function MemberCard({ member, children }) {
   const { name, domain, position, bio, photo_url, branch, semester, linkedin_url, github_url } = member
-  const isLead = position === 'Head' // the Head gets the lime chip
 
   return (
     <article className="card group flex flex-col overflow-hidden rounded-2xl border border-line bg-surface transition duration-300 ease-out hover:-translate-y-1.5 hover:border-lime/60 hover:shadow-[0_20px_40px_-20px_rgba(216,240,110,0.22)]">
       <div className="p-3.5">
-        <span
-          className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
-            isLead ? 'bg-lime text-lime-ink' : 'border border-line bg-bg text-ink transition-colors duration-300 group-hover:border-lime/60 group-hover:text-lime'
-          }`}
-        >
+        <span className="inline-block rounded-full bg-lime px-3 py-1 text-xs font-medium text-lime-ink">
           {domain}
         </span>
       </div>
